@@ -2,14 +2,13 @@ import requests
 import json
 import unicodedata
 
-# continuez bien avec les url de ce fichier
 open_quizz_db_data = (
     ("Animaux", "Les chats", "https://www.codeavecjonathan.com/res/mission/openquizzdb_50.json"),
     ("Arts", "Musée du Louvre", "https://www.codeavecjonathan.com/res/mission/openquizzdb_86.json"),
-    ("Bande dessinnée", "Tintin", "https://www.kiwimeeee.com/oqdb/files/2124627384/OpenQuizzDB_124/openquizzdb_124.json"),
     ("Cinéma", "Alien", "https://www.codeavecjonathan.com/res/mission/openquizzdb_241.json"),
     ("Cinéma", "Star wars", "https://www.codeavecjonathan.com/res/mission/openquizzdb_90.json"),
 )
+
 
 def strip_accents(s):
     return ''.join(c for c in unicodedata.normalize('NFD', s) if unicodedata.category(c) != 'Mn')
@@ -25,7 +24,7 @@ def generate_json_file(categorie, titre, url):
     try:
         response = requests.get(url)
     except:
-        print("Exception pour la requete : " + url)
+        print("Exception pour la requete HTTP GET : " + url)
     else:
         try:
             data = json.loads(response.text)
@@ -48,9 +47,9 @@ def generate_json_file(categorie, titre, url):
                 file.write(out_json)
                 file.close()
                 print("end")
-            
         except:
-            print("Exception pour l'url : " + url + " - Questionnaire : " + titre)
+            print(f"Exception dans la désérialisation ou l'utilisation des données (questionnaire : {titre}, url: {url})")
+
     
 
 for quizz_data in open_quizz_db_data:
